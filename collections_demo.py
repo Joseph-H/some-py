@@ -1,4 +1,4 @@
-from collections import ChainMap, Counter, defaultdict, deque
+from collections import ChainMap, Counter, defaultdict, deque, namedtuple, OrderedDict
 
 # chainmap example
 car_parts = {'hood': 500, 'engine': 5000, 'front_door': 750}
@@ -33,3 +33,22 @@ numbers = deque([1,2,3,4,5])
 numbers.append(6)
 numbers.appendleft(0)
 print(numbers)
+
+
+# namedtuple example - allows you to create a tuple with named properties
+# first parameter is the type second param is a space delimited list of property names
+Person = namedtuple("Person", "firstname lastname age")
+joseph = Person(firstname="joseph", lastname="h", age="30")
+print(joseph)
+print(type(joseph))
+
+# OrderedDict example - dictionary that keeps insertion order
+ordered = OrderedDict({"a":1, "b":2, "c":3})
+print(ordered)
+
+# remove a then re-insert it. it will be at the end
+ordered.pop("a")
+print(ordered)
+
+ordered["a"] = 1
+print(ordered)
