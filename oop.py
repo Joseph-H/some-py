@@ -1,3 +1,5 @@
+# need examples of inheritance and multiple inheritance
+
 class Employee:
     def __init__(self, ID, salary):
         self.ID = ID
