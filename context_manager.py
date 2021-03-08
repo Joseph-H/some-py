@@ -1,6 +1,6 @@
 import sqlite3
 from urllib.request import urlopen
-from contextlib import closing, contextmanager, supress, redirect_stdout
+from contextlib import closing, contextmanager, redirect_stdout, supress
 
 # context manager allows you to "open" something, use it and then it gets closed. For example:
 """
@@ -9,6 +9,8 @@ with open(path, 'w') as f_obj:
 """
 
 # create a context manager that connects to a database
+
+
 class DataConn:
     """"""
 
@@ -34,15 +36,18 @@ class DataConn:
         if exc_val:
             raise
 
+
 if __name__ == '__main__':
     db = 'test.db'
     with DataConn(db) as conn:
         cursor = conn.cursor()
 
+"""
+context manager with contextmanager decorator - this is handy and let's you skip enter and exit
+as lines from the filed are available, they are yielded. If an error happens or the file is done then finally is called
+you can say this is self closing
+"""
 
-# context manager with contextmanager decorator - this is handy and let's you skip enter and exit
-# as lines from the filed are available, they are yielded. If an error happens or the file is done then finally is called
-# you can say this is self closing
 
 @contextmanager
 def file_open(path):
@@ -55,12 +60,15 @@ def file_open(path):
         print('Closing file')
         f_obj.close()
 
+
 if __name__ == '__main__':
     with file_open('test.txt') as fobj:
         fobj.write('Testing context managers')
 
-# there is a function you can use that will let you create a context manager and close it for you when the code
-# goes out of scope
+"""
+there is a function you can use that will let you create a context manager and close it for you when the code
+goes out of scope
+"""
 with closing(urlopen('http://www.google.com')) as webpage:
     for line in webpage:
         # process the line
@@ -68,7 +76,7 @@ with closing(urlopen('http://www.google.com')) as webpage:
 
 
 # another handy function is supress, if you want to supress errors do this
-with suppress(FileNotFoundError):
+with supress(FileNotFoundError):
     with open('fauxfile.txt') as fobj:
         for line in fobj:
             print(line)
@@ -79,3 +87,9 @@ with open(path, 'w') as fobj:
     with redirect_stdout(fobj):
         # by using the help method here the output is getting written to the file
         help(redirect_stdout)
+
+"""
+Re-entrant context managers
+just know that they exist. Most context managers don't let you back in when you have executed them
+if you need a reentrant context manager look it up
+"""
