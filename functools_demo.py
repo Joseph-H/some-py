@@ -1,7 +1,7 @@
 import urllib.error
 import urllib.request
 
-from functools import lru_cache, partial
+from functools import lru_cache, partial, singledispatch
 
 """
 @lru_cache will “wrap a function with a memoizing callable that saves up to the maxsize most recent calls”
@@ -36,3 +36,29 @@ def add(one, two):
 saved = partial(add, 2, 4)
 # when saved is executed then it executes the function
 print(saved())
+
+"""
+Function overloading with singledispatch. Overloading only happens on type, though
+"""
+
+
+@singledispatch
+def print_type(arg):
+    raise NotImplementedError("Unsupported type")
+
+
+@print_type.register(int)
+def _(arg):
+    print("Argument is of type ", type(arg))
+
+
+@print_type.register(float)
+@print_type.register(str)
+def _(arg):
+    # and you can stack types
+    print("Argument is of type ", type(arg))
+
+
+print_type(2)
+print_type(2.0)
+print_type("2")
